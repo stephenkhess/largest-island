@@ -1,6 +1,6 @@
 # Largest Island Detection
 
-This project is an experiment of mine to show how generative testing can be used to solve the algorithmic problem of detecting all coordinates on an island of black points in an m x n grid.
+This project is an experiment of mine to show how generative testing can be used to solve the algorithmic problem of detecting all coordinates on an island of black points in an `m` x `n` grid.
 
 Grid.java contains the main logic for initializing a grid with black pairs and detecting an island.  This is Algorithms 101 and not very exciting.  
 
