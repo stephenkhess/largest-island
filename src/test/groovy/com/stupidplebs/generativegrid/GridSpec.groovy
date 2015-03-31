@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.stupidplebs.generativegrid.generators.ProbabilisticIslandGenerator;
+import com.stupidplebs.generativegrid.generators.RingIslandGenerator;
+
 import spock.lang.Ignore;
 import spock.lang.Shared;
 import spock.lang.Specification
@@ -87,57 +90,6 @@ class GridSpec extends Specification {
 		
 	}
 	
-	def "null cell parameter to get should throw NullPointerException"() {
-		given:
-		def height = random.nextInt(100)+1
-		def width = random.nextInt(100)+1
-		
-		and:
-		def grid = new Grid(height, width, [])
-		
-		when:
-		grid.getColor(null)
-		
-		then:
-		NullPointerException e = thrown()
-		e.message == "pair cannot be null"
-		
-	}
-	
-	def "cell with x greater than grid width should throw IllegalArgumentException"() {
-		given:
-		def height = random.nextInt(100)+1
-		def width = random.nextInt(100)+1
-
-		and:
-		def grid = new Grid(height, width, [])
-		
-		when:
-		grid.getColor(new Pair(grid.width+1, random.nextInt(grid.height)))
-		
-		then:
-		IllegalArgumentException e = thrown()
-		e.message == "pair.x cannot be greater than grid width"
-
-	}
-
-	def "cell with y greater than grid height should throw IllegalArgumentException"() {
-		given:
-		def height = random.nextInt(100)+1
-		def width = random.nextInt(100)+1
-
-		and:
-		def grid = new Grid(height, width, [])
-		
-		when:
-		grid.getColor(new Pair(random.nextInt(grid.width), grid.height+1))
-		
-		then:
-		IllegalArgumentException e = thrown()
-		e.message == "pair.y cannot be greater than grid height"
-
-	}
-	
 	def "getHeight and getWidth should return the height and width as supplied by the GridPopulator"() {
 		given:
 		def height = random.nextInt(100) + 1
@@ -152,95 +104,6 @@ class GridSpec extends Specification {
 		
 	}
 
-	def "getColor should return BLACK if cell is was a black coordinate"() {
-		given:
-		def height = 4
-		def width = 4 
-		def blackPairs = [
-				Pair.of(0, 0),
-				Pair.of(1, 1),
-				Pair.of(2, 2),
-				Pair.of(3, 3)
-				]
-		
-		and:
-		def grid = new Grid(height, width, blackPairs)
-		
-		expect:
-		grid.getColor(new Pair(x, y)) == Color.BLACK
-		
-		where:
-		[x, y] << [(0..3), (0..3)].combinations().findAll { x, y -> x == y }
-
-	}
-	
-	def "getColor should return WHITE if cell is was not a black coordinate"() {
-		given:
-		def height = 4
-		def width = 4 
-		def blackPairs = [
-				Pair.of(0, 0),
-				Pair.of(1, 1),
-				Pair.of(2, 2),
-				Pair.of(3, 3)
-				]
-
-		and:
-		def grid = new Grid(height, width, blackPairs)
-		
-		expect:
-		grid.getColor(new Pair(x, y)) == Color.WHITE
-		
-		where:
-		[x, y] << [(0..3), (0..3)].combinations().findAll { x, y -> x != y }
-
-	}
-	
-	def "getPairsByColor should return all BLACK pairs when asked"() {
-		given:
-		def height = 4
-		def width = 4 
-		def blackPairs = [
-				Pair.of(0, 0),
-				Pair.of(1, 1),
-				Pair.of(2, 2),
-				Pair.of(3, 3)
-				]
-
-		and:
-		def grid = new Grid(height, width, blackPairs)
-		
-		expect:
-		grid.getPairsByColor(Color.BLACK) == [
-			Pair.of(0, 0), Pair.of(1, 1), Pair.of(2, 2), Pair.of(3, 3)
-			] as Set
-
-	}
-	
-	def "getPairsByColor should return all WHITE pairs when asked"() {
-		given:
-		def height = 4
-		def width = 4 
-		def blackPairs = [
-				Pair.of(0, 0),
-				Pair.of(1, 1),
-				Pair.of(2, 2),
-				Pair.of(3, 3)
-				]
-
-		and:
-		def grid = new Grid(height, width, blackPairs)
-		
-		expect:
-		grid.getPairsByColor(Color.WHITE) == [
-			Pair.of(1, 0), Pair.of(2, 0), Pair.of(3, 0),
-			Pair.of(0, 1), Pair.of(2, 1), Pair.of(3, 1),
-			Pair.of(0, 2), Pair.of(1, 2), Pair.of(3, 2),
-			Pair.of(0, 3), Pair.of(1, 3), Pair.of(2, 3)
-			] as Set
-
-	}
-	
 	def "null pair parameter to getLargestIsland should throw NullPointerException"() {
 		given:
 		def height = 4
@@ -259,7 +122,7 @@ class GridSpec extends Specification {
 
 	}
 	
-	def "dump"() {
+	def "prettyPrint should output 'B' for BLACK and '-' for WHITE"() {
 		given:
 		def height = 4
 		def width = 6
@@ -328,32 +191,34 @@ class GridSpec extends Specification {
 				Pair.of(1, 1)] as Set
 
 		where:
-		startingPair << [Pair.of(0,0), Pair.of(0, 1), Pair.of(1, 0), Pair.of(1, 1)]
+		startingPair << [Pair.of(0,0), Pair.of(0,1), Pair.of(1,0), Pair.of(1,1)]
 			
 	}
 	
 	def "probabilistic island generator"() {
 		given:
-		def height = random.nextInt(100)+1
-		def width = random.nextInt(100)+1
+		def islandGenerator = new ProbabilisticIslandGenerator()
 		
-		def islandGenerator = new ProbabilisticIslandGenerator([height: height, width: width])
-		def blackPairs = islandGenerator.generateIsland(0.5)
+		and:
+		def height = 20 //random.nextInt(100)+1
+		def width = 20 //random.nextInt(100)+1
+		def blackPairs = islandGenerator.generateIsland(height, width, 0.5)
 
+		and: "select a random starting pair from the black pairs"
 		def startingPair = blackPairs.toList()[random.nextInt(blackPairs.size())]
 			
 		and:
 		def grid = new Grid(height, width, blackPairs)
 
 		when:
-//		println grid.prettyPrint() + ""
+		println grid.prettyPrint() + "\n"
 		def island = grid.getLargestIsland(startingPair)
 
 		then:
 		island == blackPairs
 		
 		where:
-		i << (1..50)
+		i << (1..5)
 		
 	}
 	

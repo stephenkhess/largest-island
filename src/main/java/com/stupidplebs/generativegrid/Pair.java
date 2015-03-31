@@ -1,6 +1,5 @@
 package com.stupidplebs.generativegrid;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
@@ -63,10 +62,7 @@ public class Pair {
 	
 	@Override
 	public String toString() {
-		return toStringHelper(this).
-				add("x", x).
-				add("y", y).
-				toString();
+		return String.format("Pair{%d,%d}", x, y);
 	}
 		
 }

@@ -28,11 +28,11 @@ class PairSpec extends Specification {
 	
 	def "negative x parameter should throw IllegalArgumentException"() {
 		given:
-		def x = Math.abs(random.nextInt()) * -1
-		def y = Math.abs(random.nextInt())
+		def x = (random.nextInt(100)+1) * -1
+		def y = random.nextInt(100)
 		
 		when:
-		def coordinate = Pair.of(x, y)
+		def pair = Pair.of(x, y)
 		
 		then:
 		IllegalArgumentException e = thrown()
@@ -42,11 +42,11 @@ class PairSpec extends Specification {
 	
 	def "negative y parameter should throw IllegalArgumentException"() {
 		given:
-		def x = Math.abs(random.nextInt())
-		def y = Math.abs(random.nextInt()) * -1
+		def x = random.nextInt(100)
+		def y = (random.nextInt(100)+1) * -1
 		
 		when:
-		def coordinate = Pair.of(x, y)
+		def pair = Pair.of(x, y)
 		
 		then:
 		IllegalArgumentException e = thrown()
@@ -56,61 +56,61 @@ class PairSpec extends Specification {
 	
 	def "0 should be accepted for both x and y"() {
 		given:
-		def coordinate = Pair.of(0, 0)
+		def pair = Pair.of(0, 0)
 		
 		expect:
-		coordinate.x == 0
-		coordinate.y == 0
+		pair.x == 0
+		pair.y == 0
 		
 	}
 	
-	def "getters should return x, y, and color passed to constructor"() {
+	def "getters should return x and y passed to constructor"() {
 		given:
 		def x = Math.abs(random.nextInt())
 		def y = Math.abs(random.nextInt())
 
 		and:		
-		def coordinate = Pair.of(x, y)
+		def pair = Pair.of(x, y)
 		
 		expect:
-		coordinate.x == x
-		coordinate.y == y
+		pair.x == x
+		pair.y == y
 		
 	}
 
 	def "instance should be unequal to null"() {
 		given:
-		def coordinate = Pair.of(Math.abs(random.nextInt()), Math.abs(random.nextInt()))
+		def pair = Pair.of(Math.abs(random.nextInt()), Math.abs(random.nextInt()))
 		
 		and:
 		def other = null
 		
 		expect:
-		!coordinate.equals(other)
+		!pair.equals(other)
 		
 	}
 	
 	def "instance should be equal to itself"() {
 		given:
-		def coordinate = Pair.of(Math.abs(random.nextInt()), Math.abs(random.nextInt()))
+		def pair = Pair.of(Math.abs(random.nextInt()), Math.abs(random.nextInt()))
 		
 		and:
-		def other = coordinate
+		def other = pair
 		
 		expect:
-		coordinate.equals(other)
+		pair.equals(other)
 		
 	}
 	
 	def "instance should be unequal to a non-Coordinate object"() {
 		given:
-		def coordinate = Pair.of(Math.abs(random.nextInt()), Math.abs(random.nextInt()))
+		def pair = Pair.of(Math.abs(random.nextInt()), Math.abs(random.nextInt()))
 		
 		and:
-		def other = "this is not an instance of Coordinate"
+		def other = "this is not an instance of Pair"
 		
 		expect:
-		!coordinate.equals(other)
+		!pair.equals(other)
 		
 	}
 	
@@ -119,14 +119,14 @@ class PairSpec extends Specification {
 		def y = Math.abs(random.nextInt())
 
 		and:		
-		def coordinate = Pair.of(1, y)
+		def pair = Pair.of(1, y)
 		
 		and:
 		def other = Pair.of(2, y)
 		
 		expect:
-		!coordinate.equals(other)
-		coordinate.hashCode() != other.hashCode()
+		!pair.equals(other)
+		pair.hashCode() != other.hashCode()
 		
 	}
 	
@@ -135,14 +135,14 @@ class PairSpec extends Specification {
 		def x = Math.abs(random.nextInt())
 
 		and:		
-		def coordinate = Pair.of(x, 1)
+		def pair = Pair.of(x, 1)
 		
 		and:
 		def other = Pair.of(x, 2)
 		
 		expect:
-		!coordinate.equals(other)
-		coordinate.hashCode() != other.hashCode()
+		!pair.equals(other)
+		pair.hashCode() != other.hashCode()
 		
 	}
 	
@@ -152,14 +152,14 @@ class PairSpec extends Specification {
 		def y = Math.abs(random.nextInt())
 		
 		and:
-		def coordinate = Pair.of(x, y)
+		def pair = Pair.of(x, y)
 		
 		and:
 		def other = Pair.of(x, y)
 		
 		expect:
-		coordinate.equals(other)
-		coordinate.hashCode() == other.hashCode()
+		pair.equals(other)
+		pair.hashCode() == other.hashCode()
 		
 	}
 	
@@ -169,10 +169,10 @@ class PairSpec extends Specification {
 		def y = Math.abs(random.nextInt())
 		
 		and:
-		def coordinate = Pair.of(x, y)
+		def pair = Pair.of(x, y)
 
 		expect:
-		coordinate.toString() == "Pair{x=$x, y=$y}"
+		pair.toString() == "Pair{$x,$y}"
 		
 	}
 	

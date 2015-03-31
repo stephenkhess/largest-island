@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 
 public class Grid {
-	private final static Joiner NEWLINE_JOINER = Joiner.on('\n');
+	private final Map<Color, Character> colorChars = ImmutableMap.of(
+			Color.BLACK, 'B', 
+			Color.WHITE, '-');
 	
 	private final Color[][] grid;
 
@@ -44,18 +47,18 @@ public class Grid {
 	}
 	
 	public String prettyPrint() {
-		final List<String> lines = new ArrayList<>();
+		final StringBuilder sb = new StringBuilder();
 		
 		for (int y = getHeight()-1; y >= 0; y--) {
-			final StringBuilder line = new StringBuilder();
-			
 			for (int x = 0; x < getWidth(); x++) {
-				line.append(grid[y][x].getChar());
+				sb.append(colorChars.get(grid[y][x]));
 			}
-			lines.add(line.toString());
+			if (y > 0) {
+				sb.append('\n');
+			}
 		}
 		
-		return NEWLINE_JOINER.join(lines);
+		return sb.toString();
 		
 	}
 	
@@ -67,38 +70,10 @@ public class Grid {
 		return grid[0].length;
 	}
 	
-	public Color getColor(final Pair pair) {
-		requireNonNull(pair, "pair cannot be null");
-		if (pair.getX() > getWidth()) {
-			throw new IllegalArgumentException("pair.x cannot be greater than grid width");
-		}
-		if (pair.getY() > getHeight()) {
-			throw new IllegalArgumentException("pair.y cannot be greater than grid height");
-		}
-		
-		return grid[pair.getY()][pair.getX()];
-		
-	}
-	
-	public Collection<Pair> getPairsByColor(final Color color) {
-		final Set<Pair> pairs = new HashSet<>();
-		
-		for (int x = 0; x < getWidth(); x++) {
-			for (int y = 0; y < getHeight(); y++) {
-				if (color == grid[y][x]) {
-					pairs.add(Pair.of(x, y));
-				}
-			}
-		}
-		
-		return pairs;
-		
-	}
-	
 	public Collection<Pair> getLargestIsland(final Pair pair) {
 		requireNonNull(pair, "pair cannot be null");
 		
-		if (grid[pair.getY()][pair.getX()] != Color.BLACK) {
+		if (!isBlack(pair)) {
 			throw new IllegalArgumentException(String.format(
 					"(%d,%d) is not BLACK", pair.getX(), pair.getY()));
 		}
@@ -114,8 +89,7 @@ public class Grid {
 		blackPairs.add(pair);
 
 		for (final Pair neighbor : getNeighbors(pair, visited)) {
-			if (getColor(neighbor) == Color.BLACK && 
-					!visited[neighbor.getY()][neighbor.getX()]) {
+			if (isBlack(neighbor) && !hasBeenVisited(neighbor, visited)) {
 				blackPairs.addAll(visit(neighbor, visited));
 			}
 			
@@ -125,6 +99,14 @@ public class Grid {
 		
 	}
 
+	private Boolean isBlack(final Pair pair) {
+		return grid[pair.getY()][pair.getX()] == Color.BLACK;
+	}
+	
+	private Boolean hasBeenVisited(final Pair pair, final boolean[][] visited) {
+		return visited[pair.getY()][pair.getX()];
+	}
+	
 	private Iterable<Pair> getNeighbors(final Pair pair, 
 			final boolean[][] visited) {
 		final List<Pair> neighbors = new ArrayList<>();
