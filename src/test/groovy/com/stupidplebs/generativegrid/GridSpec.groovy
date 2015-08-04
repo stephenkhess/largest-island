@@ -114,7 +114,7 @@ class GridSpec extends Specification {
         e.message == "pair cannot be null"
     }
 
-    def "prettyPrint should output 'B' for BLACK and '-' for WHITE"() {
+    def "toString should output 'B' for BLACK and '-' for WHITE"() {
         given:
         def height = 4
         def width = 6
@@ -129,7 +129,7 @@ class GridSpec extends Specification {
         def grid = new Grid(height, width, blackPairs)
 
         expect:
-        grid.prettyPrint() == [
+        grid.toString() == [
             "---B--",
             "--B---",
             "-B----",
@@ -211,7 +211,7 @@ class GridSpec extends Specification {
         def grid = new Grid(height, width, blackPairs)
 
         when:
-//        println grid.prettyPrint() + "\n"
+//        println grid.toString() + "\n"
         def island = grid.getLargestIsland(startingPair)
 
         then:

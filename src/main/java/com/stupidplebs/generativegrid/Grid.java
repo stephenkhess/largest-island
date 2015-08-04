@@ -6,15 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableMap;
-
 public class Grid {
-    private final Map<Color, Character> colorChars = ImmutableMap.of(
-            Color.BLACK, 'B', Color.WHITE, '-');
-
     private final Color[][] grid;
 
     public Grid(final Integer height, final Integer width,
@@ -45,22 +39,6 @@ public class Grid {
         for (final Pair blackPair : blackPairs) {
             this.grid[blackPair.getY()][blackPair.getX()] = Color.BLACK;
         }
-
-    }
-
-    public String prettyPrint() {
-        final StringBuilder sb = new StringBuilder();
-
-        for (int y = getHeight() - 1; y >= 0; y--) {
-            for (int x = 0; x < getWidth(); x++) {
-                sb.append(colorChars.get(grid[y][x]));
-            }
-            if (y > 0) {
-                sb.append('\n');
-            }
-        }
-
-        return sb.toString();
 
     }
 
@@ -134,6 +112,23 @@ public class Grid {
         }
 
         return neighbors;
+
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+
+        for (int y = getHeight() - 1; y >= 0; y--) {
+            for (int x = 0; x < getWidth(); x++) {
+                sb.append(grid[y][x]);
+            }
+            if (y > 0) {
+                sb.append('\n');
+            }
+        }
+
+        return sb.toString();
 
     }
 
