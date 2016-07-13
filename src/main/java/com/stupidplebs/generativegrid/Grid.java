@@ -68,7 +68,7 @@ public class Grid {
         final Set<Pair> blackPairs = new HashSet<>();
         blackPairs.add(pair);
 
-        for (final Pair neighbor : getNeighbors(pair, visited)) {
+        for (final Pair neighbor : getNeighbors(pair)) {
             if (isBlack(neighbor) && !hasBeenVisited(neighbor, visited)) {
                 blackPairs.addAll(visit(neighbor, visited));
             }
@@ -87,8 +87,7 @@ public class Grid {
         return visited[pair.getY()][pair.getX()];
     }
 
-    private Iterable<Pair> getNeighbors(final Pair pair,
-            final boolean[][] visited) {
+    private Iterable<Pair> getNeighbors(final Pair pair) {
         final List<Pair> neighbors = new ArrayList<>();
 
         // north
