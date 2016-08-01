@@ -58,18 +58,18 @@ public class Grid {
                     "(%d,%d) is not BLACK", pair.getX(), pair.getY()));
         }
 
-        return visit(pair, new boolean[getHeight()][getWidth()]);
+        return visit(pair, new HashSet<>());
 
     }
 
-    private Collection<Pair> visit(final Pair pair, final boolean[][] visited) {
-        visited[pair.getY()][pair.getX()] = true;
+    private Collection<Pair> visit(final Pair pair, final Set<Pair> visited) {
+        visited.add(pair);
 
         final Set<Pair> blackPairs = new HashSet<>();
         blackPairs.add(pair);
 
         for (final Pair neighbor : getNeighbors(pair)) {
-            if (isBlack(neighbor) && !hasBeenVisited(neighbor, visited)) {
+            if (isBlack(neighbor) && !visited.contains(neighbor)) {
                 blackPairs.addAll(visit(neighbor, visited));
             }
 
@@ -81,10 +81,6 @@ public class Grid {
 
     private Boolean isBlack(final Pair pair) {
         return grid[pair.getY()][pair.getX()] == Color.BLACK;
-    }
-
-    private Boolean hasBeenVisited(final Pair pair, final boolean[][] visited) {
-        return visited[pair.getY()][pair.getX()];
     }
 
     private Iterable<Pair> getNeighbors(final Pair pair) {
