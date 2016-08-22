@@ -1,8 +1,7 @@
-package com.stupidplebs.generativegrid.generators
+package com.stupidplebs.largestisland.generators
 
-import java.util.Collection;
+import com.stupidplebs.largestisland.Pair
 
-import com.stupidplebs.generativegrid.Pair;
 
 class ProbabilisticIslandGenerator {
     def random = new Random()

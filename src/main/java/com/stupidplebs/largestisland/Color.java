@@ -1,4 +1,4 @@
-package com.stupidplebs.generativegrid;
+package com.stupidplebs.largestisland;
 
 public enum Color {
     BLACK('B'), WHITE('-');

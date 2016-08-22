@@ -1,4 +1,4 @@
-package com.stupidplebs.generativegrid;
+package com.stupidplebs.largestisland;
 
 import static java.util.Objects.requireNonNull;
 

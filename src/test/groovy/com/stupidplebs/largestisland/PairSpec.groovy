@@ -1,4 +1,4 @@
-package com.stupidplebs.generativegrid
+package com.stupidplebs.largestisland
 
 import spock.lang.Shared
 import spock.lang.Specification

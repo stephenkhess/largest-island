@@ -1,6 +1,7 @@
-package com.stupidplebs.generativegrid.generators
+package com.stupidplebs.largestisland.generators
 
-import com.stupidplebs.generativegrid.Pair;
+import com.stupidplebs.largestisland.Pair
+
 
 class RingIslandGenerator {
     def width

@@ -1,17 +1,10 @@
-package com.stupidplebs.generativegrid
+package com.stupidplebs.largestisland
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.stupidplebs.generativegrid.generators.ProbabilisticIslandGenerator;
-import com.stupidplebs.generativegrid.generators.RingIslandGenerator;
-
-import spock.lang.Ignore;
-import spock.lang.Shared;
+import spock.lang.Shared
 import spock.lang.Specification
+
+import com.stupidplebs.largestisland.generators.ProbabilisticIslandGenerator
+import com.stupidplebs.largestisland.generators.RingIslandGenerator
 
 class GridSpec extends Specification {
     @Shared def random = new Random()
