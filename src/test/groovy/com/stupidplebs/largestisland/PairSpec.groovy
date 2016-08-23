@@ -26,8 +26,8 @@ class PairSpec extends Specification {
 
     def "negative x parameter should throw IllegalArgumentException"() {
         given:
-        def x = (random.nextInt(100)+1) * -1
-        def y = random.nextInt(100)
+        def x = Math.abs(random.nextInt()+1) * -1
+        def y = Math.abs(random.nextInt())
 
         when:
         def pair = Pair.of(x, y)
@@ -39,8 +39,8 @@ class PairSpec extends Specification {
 
     def "negative y parameter should throw IllegalArgumentException"() {
         given:
-        def x = random.nextInt(100)
-        def y = (random.nextInt(100)+1) * -1
+        def x = Math.abs(random.nextInt())
+        def y = Math.abs(random.nextInt()+1) * -1
 
         when:
         def pair = Pair.of(x, y)
@@ -107,13 +107,14 @@ class PairSpec extends Specification {
 
     def "instances differing on x should be unequal and have unequal hashCodes"() {
         given:
+        def x = Math.abs(random.nextInt())
         def y = Math.abs(random.nextInt())
 
         and:
-        def pair = Pair.of(1, y)
+        def pair = Pair.of(x, y)
 
         and:
-        def other = Pair.of(2, y)
+        def other = Pair.of(x+1, y)
 
         expect:
         !pair.equals(other)
@@ -123,12 +124,13 @@ class PairSpec extends Specification {
     def "instances differing on y should be unequal and have unequal hashCodes"() {
         given:
         def x = Math.abs(random.nextInt())
+        def y = Math.abs(random.nextInt())
+        
+        and:
+        def pair = Pair.of(x, y)
 
         and:
-        def pair = Pair.of(x, 1)
-
-        and:
-        def other = Pair.of(x, 2)
+        def other = Pair.of(x, y+1)
 
         expect:
         !pair.equals(other)
