@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 public class Grid {
-    private final boolean[][] grid;
+    private final Integer height;
+    private final Integer width;
+    private final Set<Pair> blackPairs = new HashSet<>();
 
     public Grid(final Integer height, final Integer width,
             final Iterable<Pair> blackPairs) {
@@ -26,31 +28,18 @@ public class Grid {
                     "height must be a positive integer");
         }
 
-        // initialize the 2-d grid
-        this.grid = new boolean[height][];
-        for (int y = 0; y < height; y++) {
-            this.grid[y] = new boolean[width];
+        this.height = height;
+        this.width = width;
+        for (final Pair pair : blackPairs) {
+            this.blackPairs.add(pair);
         }
-
-        // now map in the black pairs
-        for (final Pair blackPair : blackPairs) {
-            this.grid[blackPair.getY()][blackPair.getX()] = true;
-        }
-
-    }
-
-    public Integer getHeight() {
-        return grid.length;
-    }
-
-    public Integer getWidth() {
-        return grid[0].length;
+        
     }
 
     public Collection<Pair> getLargestIsland(final Pair pair) {
         requireNonNull(pair, "pair cannot be null");
 
-        if (!isBlack(pair)) {
+        if (!blackPairs.contains(pair)) {
             throw new IllegalArgumentException(String.format(
                     "(%d,%d) is not BLACK", pair.getX(), pair.getY()));
         }
@@ -67,7 +56,7 @@ public class Grid {
         blackPairs.add(pair);
 
         for (final Pair neighbor : getNeighbors(pair)) {
-            if (isBlack(neighbor) && !visited.contains(neighbor)) {
+            if (blackPairs.contains(neighbor) && !visited.contains(neighbor)) {
                 blackPairs.addAll(visit(neighbor, visited));
             }
 
@@ -77,15 +66,11 @@ public class Grid {
 
     }
 
-    private Boolean isBlack(final Pair pair) {
-        return grid[pair.getY()][pair.getX()];
-    }
-
     private Iterable<Pair> getNeighbors(final Pair pair) {
         final List<Pair> neighbors = new ArrayList<>();
 
         // north
-        if (pair.getY() + 1 < getHeight()) {
+        if (pair.getY() + 1 < height) {
             neighbors.add(Pair.of(pair.getX(), pair.getY() + 1));
         }
 
@@ -95,7 +80,7 @@ public class Grid {
         }
 
         // east
-        if (pair.getX() + 1 < getWidth()) {
+        if (pair.getX() + 1 < width) {
             neighbors.add(Pair.of(pair.getX() + 1, pair.getY()));
         }
 
@@ -112,9 +97,9 @@ public class Grid {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
 
-        for (int y = getHeight() - 1; y >= 0; y--) {
-            for (int x = 0; x < getWidth(); x++) {
-                sb.append(grid[y][x] ? 'B' : '-');
+        for (int y = height - 1; y >= 0; y--) {
+            for (int x = 0; x < width; x++) {
+                sb.append(blackPairs.contains(Pair.of(x, y)) ? 'B' : '-');
             }
             if (y > 0) {
                 sb.append('\n');
