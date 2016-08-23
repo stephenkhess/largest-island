@@ -11,7 +11,7 @@ import java.util.Set;
 public class Grid {
     private final Integer height;
     private final Integer width;
-    private final Set<Pair> blackPairs = new HashSet<>();
+    private final Set<Pair> island = new HashSet<>();
 
     public Grid(final Integer height, final Integer width,
             final Iterable<Pair> blackPairs) {
@@ -31,7 +31,7 @@ public class Grid {
         this.height = height;
         this.width = width;
         for (final Pair pair : blackPairs) {
-            this.blackPairs.add(pair);
+            this.island.add(pair);
         }
         
     }
@@ -39,7 +39,7 @@ public class Grid {
     public Collection<Pair> getLargestIsland(final Pair pair) {
         requireNonNull(pair, "pair cannot be null");
 
-        if (!this.blackPairs.contains(pair)) {
+        if (!this.island.contains(pair)) {
             throw new IllegalArgumentException(String.format(
                     "(%d,%d) is not BLACK", pair.getX(), pair.getY()));
         }
@@ -52,17 +52,17 @@ public class Grid {
         // mark that this pair has been visited so it's not visited again
         visited.add(pair);
 
-        final Set<Pair> blackPairs = new HashSet<>();
-        blackPairs.add(pair);
+        final Set<Pair> workingIsland = new HashSet<>();
+        workingIsland.add(pair);
 
         for (final Pair neighbor : getNeighbors(pair)) {
-            if (this.blackPairs.contains(neighbor) && !visited.contains(neighbor)) {
-                blackPairs.addAll(visit(neighbor, visited));
+            if (island.contains(neighbor) && !visited.contains(neighbor)) {
+                workingIsland.addAll(visit(neighbor, visited));
             }
 
         }
 
-        return blackPairs;
+        return workingIsland;
 
     }
 
@@ -99,7 +99,7 @@ public class Grid {
 
         for (int y = height - 1; y >= 0; y--) {
             for (int x = 0; x < width; x++) {
-                sb.append(blackPairs.contains(Pair.of(x, y)) ? 'B' : '-');
+                sb.append(island.contains(Pair.of(x, y)) ? 'B' : '-');
             }
             if (y > 0) {
                 sb.append('\n');
