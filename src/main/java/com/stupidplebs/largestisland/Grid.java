@@ -39,7 +39,7 @@ public class Grid {
     public Collection<Pair> getLargestIsland(final Pair pair) {
         requireNonNull(pair, "pair cannot be null");
 
-        if (!blackPairs.contains(pair)) {
+        if (!this.blackPairs.contains(pair)) {
             throw new IllegalArgumentException(String.format(
                     "(%d,%d) is not BLACK", pair.getX(), pair.getY()));
         }
@@ -56,7 +56,7 @@ public class Grid {
         blackPairs.add(pair);
 
         for (final Pair neighbor : getNeighbors(pair)) {
-            if (blackPairs.contains(neighbor) && !visited.contains(neighbor)) {
+            if (this.blackPairs.contains(neighbor) && !visited.contains(neighbor)) {
                 blackPairs.addAll(visit(neighbor, visited));
             }
 
