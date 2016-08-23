@@ -11,7 +11,7 @@ class GridSpec extends Specification {
 
     def "null height should throw NullPointerException"() {
         when:
-        new Grid(null, random.nextInt(100)+1, [])
+        new Grid(null, Math.abs(random.nextInt())+1, [])
 
         then:
         NullPointerException e = thrown()
@@ -20,7 +20,7 @@ class GridSpec extends Specification {
 
     def "null width should throw NullPointerException"() {
         when:
-        new Grid(random.nextInt(100)+1, null, [])
+        new Grid(Math.abs(random.nextInt())+1, null, [])
 
         then:
         NullPointerException e = thrown()
@@ -29,7 +29,7 @@ class GridSpec extends Specification {
 
     def "null blackPairs should throw NullPointerException"() {
         when:
-        new Grid(random.nextInt(100)+1, random.nextInt(100)+1, null)
+        new Grid(Math.abs(random.nextInt())+1, Math.abs(random.nextInt())+1, null)
 
         then:
         NullPointerException e = thrown()
@@ -38,7 +38,7 @@ class GridSpec extends Specification {
 
     def "non-positive height should throw IllegalArgumentException"() {
         when:
-        new Grid(height, random.nextInt(100)+1, [])
+        new Grid(height, Math.abs(random.nextInt())+1, [])
 
         then:
         IllegalArgumentException e = thrown()
@@ -52,7 +52,7 @@ class GridSpec extends Specification {
 
     def "non-positive width should throw IllegalArgumentException"() {
         when:
-        new Grid(random.nextInt(100)+1, width, [])
+        new Grid(Math.abs(random.nextInt())+1, width, [])
 
         then:
         IllegalArgumentException e = thrown()
@@ -62,32 +62,6 @@ class GridSpec extends Specification {
         width                         | _
         0                             | _
         Math.abs(random.nextInt())*-1 | _
-    }
-
-    def "getWidth and getHeight should return the width of the grid"() {
-        given:
-        def height = random.nextInt(100)+1
-        def width = random.nextInt(100)+1
-
-        and:
-        def grid = new Grid(height, width, [])
-
-        expect:
-        grid.height == height
-        grid.width == width
-    }
-
-    def "getHeight and getWidth should return the height and width as supplied by the GridPopulator"() {
-        given:
-        def height = random.nextInt(100) + 1
-        def width = random.nextInt(100) + 1
-
-        and:
-        def grid = new Grid(height, width, [])
-
-        expect:
-        grid.height == height
-        grid.width == width
     }
 
     def "null pair parameter to getLargestIsland should throw NullPointerException"() {
