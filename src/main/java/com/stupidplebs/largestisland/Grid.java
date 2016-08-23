@@ -60,6 +60,7 @@ public class Grid {
     }
 
     private Collection<Pair> visit(final Pair pair, final Set<Pair> visited) {
+        // mark that this pair has been visited so it's not visited again
         visited.add(pair);
 
         final Set<Pair> blackPairs = new HashSet<>();
