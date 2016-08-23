@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Grid {
-    private final Color[][] grid;
+    private final boolean[][] grid;
 
     public Grid(final Integer height, final Integer width,
             final Iterable<Pair> blackPairs) {
@@ -27,17 +27,14 @@ public class Grid {
         }
 
         // initialize the 2-d grid
-        this.grid = new Color[height][];
+        this.grid = new boolean[height][];
         for (int y = 0; y < height; y++) {
-            this.grid[y] = new Color[width];
-            for (int x = 0; x < width; x++) {
-                this.grid[y][x] = Color.WHITE;
-            }
+            this.grid[y] = new boolean[width];
         }
 
         // now map in the black pairs
         for (final Pair blackPair : blackPairs) {
-            this.grid[blackPair.getY()][blackPair.getX()] = Color.BLACK;
+            this.grid[blackPair.getY()][blackPair.getX()] = true;
         }
 
     }
@@ -80,7 +77,7 @@ public class Grid {
     }
 
     private Boolean isBlack(final Pair pair) {
-        return grid[pair.getY()][pair.getX()] == Color.BLACK;
+        return grid[pair.getY()][pair.getX()];
     }
 
     private Iterable<Pair> getNeighbors(final Pair pair) {
@@ -116,7 +113,7 @@ public class Grid {
 
         for (int y = getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < getWidth(); x++) {
-                sb.append(grid[y][x]);
+                sb.append(grid[y][x] ? 'B' : '-');
             }
             if (y > 0) {
                 sb.append('\n');
