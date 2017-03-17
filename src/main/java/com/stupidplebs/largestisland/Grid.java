@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Grid {
     private final Integer height;
@@ -30,9 +32,7 @@ public class Grid {
 
         this.height = height;
         this.width = width;
-        for (final Pair pair : blackPairs) {
-            this.island.add(pair);
-        }
+        blackPairs.forEach(island::add);
         
     }
 
@@ -59,14 +59,13 @@ public class Grid {
             if (island.contains(neighbor) && !visited.contains(neighbor)) {
                 workingIsland.addAll(visit(neighbor, visited));
             }
-
         }
 
         return workingIsland;
 
     }
 
-    private Iterable<Pair> getNeighbors(final Pair pair) {
+    private List<Pair> getNeighbors(final Pair pair) {
         final List<Pair> neighbors = new ArrayList<>();
 
         // north
@@ -98,9 +97,11 @@ public class Grid {
         final StringBuilder sb = new StringBuilder();
 
         for (int y = height - 1; y >= 0; y--) {
-            for (int x = 0; x < width; x++) {
-                sb.append(island.contains(Pair.of(x, y)) ? 'B' : '-');
-            }
+            final int z = y;
+            sb.append(IntStream.range(0, width).
+                    mapToObj(x -> island.contains(Pair.of(x, z)) ? "B" : "-").
+                    collect(Collectors.joining()));
+            
             if (y > 0) {
                 sb.append('\n');
             }
