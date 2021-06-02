@@ -32,8 +32,7 @@ public class Grid {
 
         this.height = height;
         this.width = width;
-        blackPairs.forEach(island::add);
-        
+        blackPairs.forEach(island::add);        
     }
 
     public Collection<Pair> getLargestIsland(final Pair pair) {
@@ -45,7 +44,6 @@ public class Grid {
         }
 
         return visit(pair, new HashSet<>());
-
     }
 
     private Collection<Pair> visit(final Pair pair, final Set<Pair> visited) {
@@ -62,7 +60,6 @@ public class Grid {
         }
 
         return workingIsland;
-
     }
 
     private List<Pair> getNeighbors(final Pair pair) {
@@ -89,7 +86,6 @@ public class Grid {
         }
 
         return neighbors;
-
     }
 
     @Override
@@ -108,7 +104,6 @@ public class Grid {
         }
 
         return sb.toString();
-
     }
 
 }

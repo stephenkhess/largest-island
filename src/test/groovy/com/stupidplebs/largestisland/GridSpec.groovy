@@ -178,7 +178,7 @@ class GridSpec extends Specification {
         def grid = new Grid(height, width, blackPairs)
 
         when:
-//        println grid.toString() + "\n"
+       println grid.toString() + "\n"
         def island = grid.getLargestIsland(startingPair)
 
         then:
